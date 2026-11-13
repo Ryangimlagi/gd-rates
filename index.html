@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GD Community Rates - Unofficial</title>
+    <title>GD Community Rate Finder</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -13,95 +14,139 @@
             padding: 20px;
         }
         .container {
-            max-width: 800px;
+            max-width: 850px;
             margin: 0 auto;
         }
         h1 {
             text-align: center;
             color: #ffd700;
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 25px;
         }
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            color: #fff;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: #ffd700;
+            color: #000;
+        }
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .filter-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+        .filter-btn.active, .filter-btn:hover {
+            opacity: 1;
+            box-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+        .btn-star { background: #ffd700; color: #000; }
+        .btn-featured { background: #1e90ff; }
+        .btn-epic { background: #ff1493; }
+        .btn-legendary { background: #9932cc; }
+        .btn-mythic { background: #ff4500; }
+        .btn-all { background: #555; }
+
         .card {
             background: rgba(255, 255, 255, 0.05);
             padding: 20px;
             border-radius: 12px;
-            margin-bottom: 20px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             backdrop-filter: blur(5px);
-        }
-        input, select, button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 8px;
-            margin-bottom: 15px;
-            border-radius: 6px;
-            border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.3);
-            color: #fff;
-            box-sizing: border-box;
-        }
-        button {
-            background: #4CAF50;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            transition: background 0.2s;
-        }
-        button:hover {
-            background: #45a049;
         }
         .level-item {
             background: rgba(0,0,0,0.4);
             padding: 12px;
             border-radius: 8px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            border-left: 5px solid #ffd700;
+            justify-content: space-between;
+            border-left: 6px solid #ffd700;
+        }
+        .level-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .level-thumb {
+            width: 110px;
+            height: 62px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: #000;
+        }
+        .level-details h4 {
+            margin: 0 0 5px 0;
+            color: #fff;
+            font-size: 16px;
+        }
+        .level-details p {
+            margin: 0;
+            font-size: 13px;
+            color: #aaa;
         }
         .badge {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 11px;
             font-weight: bold;
         }
         .mythic { background: #ff4500; }
         .legendary { background: #9932cc; }
         .epic { background: #ff1493; }
-        .feature { background: #1e90ff; }
+        .featured { background: #1e90ff; }
         .star { background: #ffd700; color: #000; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>⭐ GD Community Rate Finder</h1>
+    <h1>⭐ GD Unrated Level Finder</h1>
     
-    <!-- Formular zum Hinzufügen -->
-    <div class="card">
-        <h3>Level vorschlagen</h3>
-        <label>Level Name:</label>
-        <input type="text" id="levelName" placeholder="z.B. Slaughterhouse Layout">
-        
-        <label>Level ID:</label>
-        <input type="text" id="levelID" placeholder="z.B. 12345678">
-        
-        <label>Gewünschter Rate:</label>
-        <select id="rateType">
-            <option value="star">Star Rate</option>
-            <option value="feature">Featured</option>
-            <option value="epic">Epic</option>
-            <option value="legendary">Legendary</option>
-            <option value="mythic">Mythic ⭐</option>
-        </select>
-
-        <button onclick="addLevel()">Level hinzufügen</button>
+    <!-- Hauptauswahl: Normale Liste oder Demon List -->
+    <div class="nav-tabs">
+        <div class="tab-btn active" id="tabNormal" onclick="switchCategory('normal')">Standard Level</div>
+        <div class="tab-btn" id="tabDemon" onclick="switchCategory('demon')">👹 Demon List</div>
     </div>
 
-    <!-- Liste der Level -->
+    <!-- Die 5 Rate-Filter Buttons -->
+    <div class="filter-buttons">
+        <button class="filter-btn btn-all active" onclick="filterRate('all')">Alle</button>
+        <button class="filter-btn btn-star" onclick="filterRate('star')">Star Rate</button>
+        <button class="filter-btn btn-featured" onclick="filterRate('featured')">Featured</button>
+        <button class="filter-btn btn-epic" onclick="filterRate('epic')">Epic</button>
+        <button class="filter-btn btn-legendary" onclick="filterRate('legendary')">Legendary</button>
+        <button class="filter-btn btn-mythic" onclick="filterRate('mythic')">Mythic</button>
+    </div>
+
     <div class="card">
-        <h3>Vorgeschlagene Level</h3>
         <div id="levelList">
             <!-- Hier erscheinen die Level -->
         </div>
@@ -109,23 +154,85 @@
 </div>
 
 <script>
-    // Lokaler Speicher zum Testen (später durch Online-Datenbank ersetzbar)
-    let levels = JSON.parse(localStorage.getItem('gd_levels')) || [];
+    // =========================================================================
+    // HIER TRÄGST DU DEINE LEVEL EIN!
+    // =========================================================================
+    // Wichtig: 
+    // - category: 'normal' oder 'demon'
+    // - rate: 'star', 'featured', 'epic', 'legendary' oder 'mythic'
+    // - image: Füge hier deinen Kopierten Bild-Link ein!
+    // =========================================================================
+
+    const levels = [
+        {
+            name: "Slaughterhouse Layout",
+            id: "12345678",
+            creator: "SpaceUK",
+            category: "demon",
+            rate: "mythic",
+            image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300" // <- DEIN BILD-LINK HIER
+        },
+        {
+            name: "Cool Layout 2",
+            id: "87654321",
+            creator: "Ryangimlagi",
+            category: "normal",
+            rate: "epic",
+            image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300" // <- DEIN BILD-LINK HIER
+        },
+        {
+            name: "Easy Star Level",
+            id: "99999999",
+            creator: "GD_Builder",
+            category: "normal",
+            rate: "star",
+            image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300" // <- DEIN BILD-LINK HIER
+        }
+    ];
+
+    // Steuerung der Filter
+    let currentCategory = 'normal';
+    let currentRate = 'all';
+
+    function switchCategory(cat) {
+        currentCategory = cat;
+        document.getElementById('tabNormal').classList.toggle('active', cat === 'normal');
+        document.getElementById('tabDemon').classList.toggle('active', cat === 'demon');
+        renderLevels();
+    }
+
+    function filterRate(rate) {
+        currentRate = rate;
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        renderLevels();
+    }
 
     function renderLevels() {
         const listContainer = document.getElementById('levelList');
         listContainer.innerHTML = '';
         
-        if (levels.length === 0) {
-            listContainer.innerHTML = '<p style="color: #aaa; text-align: center;">Noch keine Level eingetragen. Füge oben eins hinzu!</p>';
+        // Filter anwenden
+        const filtered = levels.filter(lvl => {
+            const matchesCat = lvl.category === currentCategory;
+            const matchesRate = (currentRate === 'all') || (lvl.rate === currentRate);
+            return matchesCat && matchesRate;
+        });
+
+        if (filtered.length === 0) {
+            listContainer.innerHTML = '<p style="text-align: center; color: #888;">Keine Level in dieser Kategorie gefunden.</p>';
             return;
         }
 
-        levels.forEach((lvl, index) => {
+        filtered.forEach((lvl) => {
             listContainer.innerHTML += `
-                <div class="level-item">
-                    <div>
-                        <strong>${lvl.name}</strong> (ID: ${lvl.ID})
+                <div class="level-item" style="border-left-color: ${getRateColor(lvl.rate)};">
+                    <div class="level-info">
+                        <img src="${lvl.image}" alt="Screenshot" class="level-thumb">
+                        <div class="level-details">
+                            <h4>${lvl.name}</h4>
+                            <p>ID: <b>${lvl.id}</b> | Ersteller: <b>${lvl.creator}</b></p>
+                        </div>
                     </div>
                     <span class="badge ${lvl.rate}">${lvl.rate.toUpperCase()}</span>
                 </div>
@@ -133,23 +240,12 @@
         });
     }
 
-    function addLevel() {
-        const name = document.getElementById('levelName').value;
-        const id = document.getElementById('levelID').value;
-        const rate = document.getElementById('rateType').value;
-
-        if (!name || !id) {
-            alert('Bitte alle Felder ausfüllen!');
-            return;
-        }
-
-        levels.push({ name: name, ID: id, rate: rate });
-        localStorage.setItem('gd_levels', JSON.stringify(levels));
-        
-        document.getElementById('levelName').value = '';
-        document.getElementById('levelID').value = '';
-        
-        renderLevels();
+    function getRateColor(rate) {
+        if(rate === 'mythic') return '#ff4500';
+        if(rate === 'legendary') return '#9932cc';
+        if(rate === 'epic') return '#ff1493';
+        if(rate === 'featured') return '#1e90ff';
+        return '#ffd700';
     }
 
     renderLevels();
