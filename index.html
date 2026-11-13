@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GD Community Rates - Unofficial</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #ffd700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+            box-sizing: border-box;
+        }
+        button {
+            background: #4CAF50;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .level-item {
+            background: rgba(0,0,0,0.4);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 5px solid #ffd700;
+        }
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .mythic { background: #ff4500; }
+        .legendary { background: #9932cc; }
+        .epic { background: #ff1493; }
+        .feature { background: #1e90ff; }
+        .star { background: #ffd700; color: #000; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>⭐ GD Community Rate Finder</h1>
+    
+    <!-- Formular zum Hinzufügen -->
+    <div class="card">
+        <h3>Level vorschlagen</h3>
+        <label>Level Name:</label>
+        <input type="text" id="levelName" placeholder="z.B. Slaughterhouse Layout">
+        
+        <label>Level ID:</label>
+        <input type="text" id="levelID" placeholder="z.B. 12345678">
+        
+        <label>Gewünschter Rate:</label>
+        <select id="rateType">
+            <option value="star">Star Rate</option>
+            <option value="feature">Featured</option>
+            <option value="epic">Epic</option>
+            <option value="legendary">Legendary</option>
+            <option value="mythic">Mythic ⭐</option>
+        </select>
+
+        <button onclick="addLevel()">Level hinzufügen</button>
+    </div>
+
+    <!-- Liste der Level -->
+    <div class="card">
+        <h3>Vorgeschlagene Level</h3>
+        <div id="levelList">
+            <!-- Hier erscheinen die Level -->
+        </div>
+    </div>
+</div>
+
+<script>
+    // Lokaler Speicher zum Testen (später durch Online-Datenbank ersetzbar)
+    let levels = JSON.parse(localStorage.getItem('gd_levels')) || [];
+
+    function renderLevels() {
+        const listContainer = document.getElementById('levelList');
+        listContainer.innerHTML = '';
+        
+        if (levels.length === 0) {
+            listContainer.innerHTML = '<p style="color: #aaa; text-align: center;">Noch keine Level eingetragen. Füge oben eins hinzu!</p>';
+            return;
+        }
+
+        levels.forEach((lvl, index) => {
+            listContainer.innerHTML += `
+                <div class="level-item">
+                    <div>
+                        <strong>${lvl.name}</strong> (ID: ${lvl.ID})
+                    </div>
+                    <span class="badge ${lvl.rate}">${lvl.rate.toUpperCase()}</span>
+                </div>
+            `;
+        });
+    }
+
+    function addLevel() {
+        const name = document.getElementById('levelName').value;
+        const id = document.getElementById('levelID').value;
+        const rate = document.getElementById('rateType').value;
+
+        if (!name || !id) {
+            alert('Bitte alle Felder ausfüllen!');
+            return;
+        }
+
+        levels.push({ name: name, ID: id, rate: rate });
+        localStorage.setItem('gd_levels', JSON.stringify(levels));
+        
+        document.getElementById('levelName').value = '';
+        document.getElementById('levelID').value = '';
+        
+        renderLevels();
+    }
+
+    renderLevels();
+</script>
+
+</body>
+</html>
