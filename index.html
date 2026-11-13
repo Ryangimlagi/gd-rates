@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GD Community Rate Finder</title>
+    <title>GD Worthy Level Finder</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -17,60 +16,94 @@
             max-width: 850px;
             margin: 0 auto;
         }
-        h1 {
+        .header {
             text-align: center;
-            color: #ffd700;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
             margin-bottom: 25px;
         }
-        .nav-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
+        h1 {
+            color: #ffd700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin: 0 0 5px 0;
+            font-size: 32px;
         }
-        .tab-btn {
-            flex: 1;
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid transparent;
-            color: #fff;
-            border-radius: 8px;
+        .credits {
+            color: #aaa;
+            font-size: 14px;
+            margin: 0;
+        }
+        .credits b {
+            color: #ffd700;
+        }
+
+        /* Container für die Buttons */
+        .controls-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        .section-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+            margin-bottom: 8px;
             font-weight: bold;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.2s;
         }
-        .tab-btn.active {
-            background: #ffd700;
-            color: #000;
-        }
-        .filter-buttons {
+
+        /* Quetsch-Effekt für die Buttons */
+        .btn-group {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
-        .filter-btn {
+        .btn-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .custom-btn {
             flex: 1;
-            padding: 10px;
+            min-width: 90px;
+            padding: 10px 14px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             color: #fff;
             font-weight: bold;
+            font-size: 13px;
             cursor: pointer;
-            opacity: 0.6;
-            transition: opacity 0.2s;
+            opacity: 0.7;
+            transition: transform 0.1s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.3);
+            user-select: none;
         }
-        .filter-btn.active, .filter-btn:hover {
+
+        /* Beim Draufklicken leicht quetschen/eindrücken */
+        .custom-btn:active {
+            transform: translateY(3px) scale(0.97);
+            box-shadow: 0 1px 0 rgba(0,0,0,0.3);
+        }
+
+        .custom-btn.active {
             opacity: 1;
-            box-shadow: 0 0 10px rgba(255,255,255,0.3);
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.3);
         }
+
+        /* Farben der Rate-Buttons */
+        .btn-all { background: #555; }
         .btn-star { background: #ffd700; color: #000; }
         .btn-featured { background: #1e90ff; }
         .btn-epic { background: #ff1493; }
         .btn-legendary { background: #9932cc; }
         .btn-mythic { background: #ff4500; }
-        .btn-all { background: #555; }
+
+        /* Farben der Difficulty-Buttons */
+        .btn-diff { background: #34495e; }
+        .btn-diff.active { background: #2ecc71; color: #fff; }
 
         .card {
             background: rgba(255, 255, 255, 0.05);
@@ -79,6 +112,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             backdrop-filter: blur(5px);
         }
+
         .level-item {
             background: rgba(0,0,0,0.4);
             padding: 12px;
@@ -89,11 +123,13 @@
             justify-content: space-between;
             border-left: 6px solid #ffd700;
         }
+
         .level-info {
             display: flex;
             align-items: center;
             gap: 15px;
         }
+
         .level-thumb {
             width: 110px;
             height: 62px;
@@ -102,16 +138,19 @@
             border: 1px solid rgba(255,255,255,0.2);
             background: #000;
         }
+
         .level-details h4 {
             margin: 0 0 5px 0;
             color: #fff;
             font-size: 16px;
         }
+
         .level-details p {
             margin: 0;
             font-size: 13px;
             color: #aaa;
         }
+
         .badge {
             padding: 6px 12px;
             border-radius: 6px;
@@ -128,22 +167,28 @@
 <body>
 
 <div class="container">
-    <h1>⭐ GD Unrated Level Finder</h1>
-    
-    <!-- Hauptauswahl: Normale Liste oder Demon List -->
-    <div class="nav-tabs">
-        <div class="tab-btn active" id="tabNormal" onclick="switchCategory('normal')">Standard Level</div>
-        <div class="tab-btn" id="tabDemon" onclick="switchCategory('demon')">👹 Demon List</div>
+    <div class="header">
+        <h1>⭐ GD Worthy Level Finder ⭐</h1>
+        <p class="credits">Created by <b>Ryangimlagi</b></p>
     </div>
+    
+    <div class="controls-card">
+        <div class="section-title">1. Rate auswählen</div>
+        <div class="btn-group">
+            <button class="custom-btn btn-all active" onclick="setRate('all', this)">Alle</button>
+            <button class="custom-btn btn-star" onclick="setRate('star', this)">Star Rate</button>
+            <button class="custom-btn btn-featured" onclick="setRate('featured', this)">Featured</button>
+            <button class="custom-btn btn-epic" onclick="setRate('epic', this)">Epic</button>
+            <button class="custom-btn btn-legendary" onclick="setRate('legendary', this)">Legendär</button>
+            <button class="custom-btn btn-mythic" onclick="setRate('mythic', this)">Mythic</button>
+        </div>
 
-    <!-- Die 5 Rate-Filter Buttons -->
-    <div class="filter-buttons">
-        <button class="filter-btn btn-all active" onclick="filterRate('all')">Alle</button>
-        <button class="filter-btn btn-star" onclick="filterRate('star')">Star Rate</button>
-        <button class="filter-btn btn-featured" onclick="filterRate('featured')">Featured</button>
-        <button class="filter-btn btn-epic" onclick="filterRate('epic')">Epic</button>
-        <button class="filter-btn btn-legendary" onclick="filterRate('legendary')">Legendary</button>
-        <button class="filter-btn btn-mythic" onclick="filterRate('mythic')">Mythic</button>
+        <div class="section-title">2. Schwierigkeit auswählen</div>
+        <div class="btn-group">
+            <button class="custom-btn btn-diff active" onclick="setDifficulty('all', this)">Alle</button>
+            <button class="custom-btn btn-diff" onclick="setDifficulty('normal', this)">Auto - Insane (1-9★)</button>
+            <button class="custom-btn btn-diff" onclick="setDifficulty('demon', this)">👹 Demons</button>
+        </div>
     </div>
 
     <div class="card">
@@ -155,12 +200,10 @@
 
 <script>
     // =========================================================================
-    // HIER TRÄGST DU DEINE LEVEL EIN!
+    // HIER FÜGST DU ALS ADMIN DEINE LEVEL EIN!
     // =========================================================================
-    // Wichtig: 
-    // - category: 'normal' oder 'demon'
+    // - difficulty: 'normal' (Auto-Insane 1-9 Sterne) oder 'demon'
     // - rate: 'star', 'featured', 'epic', 'legendary' oder 'mythic'
-    // - image: Füge hier deinen Kopierten Bild-Link ein!
     // =========================================================================
 
     const levels = [
@@ -168,43 +211,42 @@
             name: "Slaughterhouse Layout",
             id: "12345678",
             creator: "SpaceUK",
-            category: "demon",
+            difficulty: "demon",
             rate: "mythic",
-            image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300" // <- DEIN BILD-LINK HIER
+            image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300"
         },
         {
-            name: "Cool Layout 2",
+            name: "Cool Insane 9 Stars",
             id: "87654321",
             creator: "Ryangimlagi",
-            category: "normal",
+            difficulty: "normal",
             rate: "epic",
-            image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300" // <- DEIN BILD-LINK HIER
+            image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300"
         },
         {
-            name: "Easy Star Level",
+            name: "Easy Auto Level",
             id: "99999999",
             creator: "GD_Builder",
-            category: "normal",
+            difficulty: "normal",
             rate: "star",
-            image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300" // <- DEIN BILD-LINK HIER
+            image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300"
         }
     ];
 
-    // Steuerung der Filter
-    let currentCategory = 'normal';
-    let currentRate = 'all';
+    let selectedRate = 'all';
+    let selectedDifficulty = 'all';
 
-    function switchCategory(cat) {
-        currentCategory = cat;
-        document.getElementById('tabNormal').classList.toggle('active', cat === 'normal');
-        document.getElementById('tabDemon').classList.toggle('active', cat === 'demon');
+    function setRate(rate, btn) {
+        selectedRate = rate;
+        btn.parentElement.querySelectorAll('.custom-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
         renderLevels();
     }
 
-    function filterRate(rate) {
-        currentRate = rate;
-        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
+    function setDifficulty(diff, btn) {
+        selectedDifficulty = diff;
+        btn.parentElement.querySelectorAll('.custom-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
         renderLevels();
     }
 
@@ -212,15 +254,14 @@
         const listContainer = document.getElementById('levelList');
         listContainer.innerHTML = '';
         
-        // Filter anwenden
         const filtered = levels.filter(lvl => {
-            const matchesCat = lvl.category === currentCategory;
-            const matchesRate = (currentRate === 'all') || (lvl.rate === currentRate);
-            return matchesCat && matchesRate;
+            const matchesRate = (selectedRate === 'all') || (lvl.rate === selectedRate);
+            const matchesDiff = (selectedDifficulty === 'all') || (lvl.difficulty === selectedDifficulty);
+            return matchesRate && matchesDiff;
         });
 
         if (filtered.length === 0) {
-            listContainer.innerHTML = '<p style="text-align: center; color: #888;">Keine Level in dieser Kategorie gefunden.</p>';
+            listContainer.innerHTML = '<p style="text-align: center; color: #888;">Keine Level für diese Auswahl gefunden.</p>';
             return;
         }
 
