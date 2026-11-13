@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GD Worthy Level Finder</title>
     <style>
+        /* =====================================================================
+           HINTERGRUND ANPASSEN: 
+           Du kannst hier den Farbverlauf (gradient) ganz einfach ändern!
+           ===================================================================== */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1e1e2f, #2a2a40);
@@ -12,13 +16,42 @@
             margin: 0;
             padding: 20px;
         }
+
         .container {
             max-width: 850px;
             margin: 0 auto;
+            position: relative;
         }
+        
+        /* Info-Button in the top right corner */
+        .info-btn-top {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffd700;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, background 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .info-btn-top:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: scale(1.1);
+        }
+
         .header {
             text-align: center;
             margin-bottom: 25px;
+            padding-right: 40px;
         }
         h1 {
             color: #ffd700;
@@ -35,7 +68,7 @@
             color: #ffd700;
         }
 
-        /* Container für die Buttons */
+        /* Controls Container */
         .controls-card {
             background: rgba(255, 255, 255, 0.05);
             padding: 15px;
@@ -54,7 +87,6 @@
             font-weight: bold;
         }
 
-        /* Quetsch-Effekt für die Buttons */
         .btn-group {
             display: flex;
             gap: 8px;
@@ -81,7 +113,6 @@
             user-select: none;
         }
 
-        /* Beim Draufklicken leicht quetschen/eindrücken */
         .custom-btn:active {
             transform: translateY(3px) scale(0.97);
             box-shadow: 0 1px 0 rgba(0,0,0,0.3);
@@ -93,7 +124,6 @@
             box-shadow: 0 2px 0 rgba(0,0,0,0.3);
         }
 
-        /* Farben der Rate-Buttons */
         .btn-all { background: #555; }
         .btn-star { background: #ffd700; color: #000; }
         .btn-featured { background: #1e90ff; }
@@ -101,7 +131,6 @@
         .btn-legendary { background: #9932cc; }
         .btn-mythic { background: #ff4500; }
 
-        /* Farben der Difficulty-Buttons */
         .btn-diff { background: #34495e; }
         .btn-diff.active { background: #2ecc71; color: #fff; }
 
@@ -162,30 +191,93 @@
         .epic { background: #ff1493; }
         .featured { background: #1e90ff; }
         .star { background: #ffd700; color: #000; }
+
+        /* Modal Popup */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #2a2a40;
+            border: 2px solid #ffd700;
+            padding: 25px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        .modal-content h3 {
+            color: #ffd700;
+            margin-top: 0;
+        }
+        .modal-content p, .modal-content ul {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #ddd;
+        }
+        .modal-content ul {
+            padding-left: 20px;
+        }
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .close-modal:hover {
+            color: #fff;
+        }
+        .email-box {
+            background: rgba(0,0,0,0.4);
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: #ffd700;
+            font-family: monospace;
+            font-weight: bold;
+            display: inline-block;
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <!-- Info Button Top Right -->
+    <button class="info-btn-top" onclick="openInfoModal()" title="Information & Contact">ℹ️</button>
+
     <div class="header">
         <h1>⭐ GD Worthy Level Finder ⭐</h1>
         <p class="credits">Created by <b>Ryangimlagi</b></p>
     </div>
     
     <div class="controls-card">
-        <div class="section-title">1. Rate auswählen</div>
+        <div class="section-title">1. Select Rate</div>
         <div class="btn-group">
-            <button class="custom-btn btn-all active" onclick="setRate('all', this)">Alle</button>
+            <button class="custom-btn btn-all active" onclick="setRate('all', this)">All</button>
             <button class="custom-btn btn-star" onclick="setRate('star', this)">Star Rate</button>
             <button class="custom-btn btn-featured" onclick="setRate('featured', this)">Featured</button>
             <button class="custom-btn btn-epic" onclick="setRate('epic', this)">Epic</button>
-            <button class="custom-btn btn-legendary" onclick="setRate('legendary', this)">Legendär</button>
+            <button class="custom-btn btn-legendary" onclick="setRate('legendary', this)">Legendary</button>
             <button class="custom-btn btn-mythic" onclick="setRate('mythic', this)">Mythic</button>
         </div>
 
-        <div class="section-title">2. Schwierigkeit auswählen</div>
+        <div class="section-title">2. Select Difficulty</div>
         <div class="btn-group">
-            <button class="custom-btn btn-diff active" onclick="setDifficulty('all', this)">Alle</button>
+            <button class="custom-btn btn-diff active" onclick="setDifficulty('all', this)">All</button>
             <button class="custom-btn btn-diff" onclick="setDifficulty('normal', this)">Auto - Insane (1-9★)</button>
             <button class="custom-btn btn-diff" onclick="setDifficulty('demon', this)">👹 Demons</button>
         </div>
@@ -193,19 +285,58 @@
 
     <div class="card">
         <div id="levelList">
-            <!-- Hier erscheinen die Level -->
+            <!-- Levels will appear here -->
         </div>
     </div>
 </div>
 
-<script>
-    // =========================================================================
-    // HIER FÜGST DU ALS ADMIN DEINE LEVEL EIN!
-    // =========================================================================
-    // - difficulty: 'normal' (Auto-Insane 1-9 Sterne) oder 'demon'
-    // - rate: 'star', 'featured', 'epic', 'legendary' oder 'mythic'
-    // =========================================================================
+<!-- Info Modal Popup -->
+<div class="modal-overlay" id="infoModal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="closeInfoModal()">&times;</button>
+        <h3>ℹ️ Information & Level Submissions</h3>
+        
+        <p><b>⚠️ Copyright / Code Usage:</b><br>
+        This code belongs to <b>Ryangimlagi</b>. You are not allowed to copy or reuse this code for your own projects without asking for permission first!</p>
 
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 15px 0;">
+
+        <p><b>📩 Found a rate-worthy level?</b><br>
+        Feel free to send me an e-mail so I can check it out and potentially add it to the list:</p>
+        
+        <!-- PUT YOUR E-MAIL HERE: -->
+        <div class="email-box">your-email@example.com</div>
+
+        <p><b>Your email MUST include the following details:</b></p>
+        <ul>
+            <li>📌 <b>Level Name</b></li>
+            <li>🔢 <b>Level ID</b></li>
+            <li>👤 <b>Level Creator</b></li>
+        </ul>
+        <p><i>I will review the level and decide if it gets added. If a level gets officially rated in-game, it will be removed from this list.</i></p>
+    </div>
+</div>
+
+<script>
+    // Info Modal Functions
+    function openInfoModal() {
+        document.getElementById('infoModal').style.display = 'flex';
+    }
+
+    function closeInfoModal() {
+        document.getElementById('infoModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('infoModal');
+        if (event.target === modal) {
+            closeInfoModal();
+        }
+    }
+
+    // =========================================================================
+    // LEVEL DATABASE (ADMIN CODE)
+    // =========================================================================
     const levels = [
         {
             name: "Slaughterhouse Layout",
@@ -261,7 +392,7 @@
         });
 
         if (filtered.length === 0) {
-            listContainer.innerHTML = '<p style="text-align: center; color: #888;">Keine Level für diese Auswahl gefunden.</p>';
+            listContainer.innerHTML = '<p style="text-align: center; color: #888;">No levels found for this selection.</p>';
             return;
         }
 
@@ -272,7 +403,7 @@
                         <img src="${lvl.image}" alt="Screenshot" class="level-thumb">
                         <div class="level-details">
                             <h4>${lvl.name}</h4>
-                            <p>ID: <b>${lvl.id}</b> | Ersteller: <b>${lvl.creator}</b></p>
+                            <p>ID: <b>${lvl.id}</b> | Creator: <b>${lvl.creator}</b></p>
                         </div>
                     </div>
                     <span class="badge ${lvl.rate}">${lvl.rate.toUpperCase()}</span>
