@@ -12,7 +12,7 @@
     <!-- Google Search Console Verifizierung -->
     <meta name="google-site-verification" content="6aHTAyq7TewHa3IuyYeciOCNPFlBgb0OeypWY-zuEz0" />
 </head>
-<body style="..."> <!-- (ab hier geht dein restlicher Code wie gewohnt weiter) -->
+<body style="">
     <style>
         /* =====================================================================
            HINTERGRUND ANPASSEN: 
@@ -201,6 +201,18 @@
         .featured { background: #1e90ff; }
         .star { background: #ffd700; color: #000; }
 
+        /* Footer & Copyright unten */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #777;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        .footer b {
+            color: #999;
+        }
+
         /* Modal Popup */
         .modal-overlay {
             display: none;
@@ -261,8 +273,6 @@
             margin: 5px 0;
         }
     </style>
-</head>
-<body>
 
 <div class="container">
     <!-- Info Button Top Right -->
@@ -297,6 +307,12 @@
             <!-- Levels will appear here -->
         </div>
     </div>
+
+    <!-- Copyright-Hinweis & RobTop-Erwähnung ganz unten -->
+    <div class="footer">
+        <p>Geometry Dash is created, developed, and owned by <b>RobTop Games</b>.<br>
+        This is an independent community fan project created by <b>Ryangimlagi</b>. Not affiliated with RobTop Games.</p>
+    </div>
 </div>
 
 <!-- Info Modal Popup -->
@@ -305,7 +321,12 @@
         <button class="close-modal" onclick="closeInfoModal()">&times;</button>
         <h3>ℹ️ Information & Level Submissions</h3>
         
-        <p><b>⚠️ Copyright / Code Usage:</b><br>
+        <p><b>⚠️ Game & Copyright Notice:</b><br>
+        Geometry Dash and all its assets belong to <b>RobTop Games</b>. This website is an unofficial fan-made curation project by <b>Ryangimlagi</b>.</p>
+
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 15px 0;">
+
+        <p><b>⚠️ Code Usage:</b><br>
         This code belongs to <b>Ryangimlagi</b>. You are not allowed to copy or reuse this code for your own projects without asking for permission first!</p>
 
         <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 15px 0;">
@@ -353,7 +374,7 @@
             creator: "Toma36",
             difficulty: "demon",
             rate: "featured",
-            image: "https://i.imgur.com/LXMl3qM.png"
+            image: "https://i.imgur.com/LXM13qM.png"
         },
         {
             name: "PopSicle",
