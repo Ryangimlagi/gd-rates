@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- SEO & Suchbegriffe -->
-    <title>GD Worthy Level Finder - Geometry Dash Unrated Levels</title>
-    <meta name="description" content="Find the best unrated Geometry Dash star, featured, epic, legendary and mythic levels. Submit your rate worthy GD levels here!">
-    <meta name="keywords" content="Geometry Dash, GD Worthy Level Finder, Geometry Dash unrated levels, GD demon list, Geometry Dash top 1, GD rate worthy levels, Geometry Dash star rate, GD featured levels, GD epic levels, GD legendary levels, GD mythic levels, Geometry Dash level finder, unrated demon levels GD, GD rate suggestions, best unrated GD levels, Geometry Dash level showcase, GD 2.2 levels, Geometry Dash community levels, GD level submission, ryangimlagi">
+    <title>GD Worthy Level Finder - Geometry Dash Must-Rate Unrated Levels</title>
+    <meta name="description" content="Discover incredible unrated Geometry Dash levels that DESERVE a rate by RobTop Games! Submit & showcase the best rate-worthy star, featured, epic, legendary and mythic levels.">
+    <meta name="keywords" content="Geometry Dash, GD Worthy Level Finder, GD unrated levels, GD rate worthy levels, Geometry Dash level finder, star rate, featured, epic, legendary, mythic, RobTop rate suggestions, ryangimlagi">
     
     <!-- Google Search Console Verifizierung -->
     <meta name="google-site-verification" content="6aHTAyq7TewHa3IuyYeciOCNPFlBgb0OeypWY-zuEz0" />
@@ -77,9 +77,17 @@
             font-size: 34px;
         }
 
+        .sub-header {
+            color: #2ecc71;
+            font-weight: bold;
+            font-size: 15px;
+            margin: 5px 0 10px 0;
+            text-shadow: 0 0 8px rgba(46, 204, 113, 0.3);
+        }
+
         .credits {
             color: #aaa;
-            font-size: 14px;
+            font-size: 13px;
             margin: 0;
         }
 
@@ -351,24 +359,25 @@
 <body>
 
 <div class="container">
-    <!-- Top Navigation (Nur Info-Button) -->
+    <!-- Top Navigation -->
     <div class="top-nav">
         <button class="nav-btn" onclick="openInfoModal()" title="Information & Submissions">ℹ️</button>
     </div>
 
     <div class="header">
         <h1>⭐ GD Worthy Level Finder ⭐</h1>
-        <p class="credits">Created by <b>Ryangimlagi</b></p>
+        <div class="sub-header">🔥 Unrated Geometry Dash Levels That DESERVE an Official Rate! 🔥</div>
+        <p class="credits">Curated & Created by <b>Ryangimlagi</b></p>
         <div class="stats-bar">
-            📊 Total Levels: <b id="totalCount">0</b> | Showing: <b id="showingCount">0</b>
+            📊 Rate-Worthy Levels Listed: <b id="totalCount">0</b> | Showing: <b id="showingCount">0</b>
         </div>
     </div>
 
     <div class="controls-card">
         <!-- Live Search Bar -->
-        <input type="text" id="searchInput" class="search-box" placeholder="🔍 Search by level name, ID or creator..." oninput="renderLevels()">
+        <input type="text" id="searchInput" class="search-box" placeholder="🔍 Search unrated levels by name, ID or creator..." oninput="renderLevels()">
 
-        <div class="section-title">1. Filter by Expected Rate</div>
+        <div class="section-title">1. Filter by DESERVED Rate (What RobTop Should Give It)</div>
         <div class="btn-group">
             <button class="custom-btn btn-all active" onclick="setRate('all', this)">All</button>
             <button class="custom-btn btn-star" onclick="setRate('star', this)">Star Rate</button>
@@ -393,7 +402,7 @@
 
     <div class="footer">
         <p>Geometry Dash is created, developed, and owned by <b>RobTop Games</b>.<br>
-        This is an independent community fan project created by <b>Ryangimlagi</b>. Not affiliated with RobTop Games.</p>
+        This is an independent community fan project showcasing unrated levels that deserve an in-game rate. Created by <b>Ryangimlagi</b>.</p>
     </div>
 </div>
 
@@ -404,26 +413,26 @@
 <div class="modal-overlay" id="infoModal">
     <div class="modal-content">
         <button class="close-modal" onclick="closeModal('infoModal')">&times;</button>
-        <h3 style="color: #ffd700; margin-top: 0;">ℹ️ Information & Copyright</h3>
+        <h3 style="color: #ffd700; margin-top: 0;">ℹ️ What is GD Worthy Level Finder?</h3>
         
-        <p><b>⚠️ Game & Copyright Notice:</b><br>
-        Geometry Dash and all its assets belong to <b>RobTop Games</b>. This website is an unofficial fan-made curation project by <b>Ryangimlagi</b>.</p>
+        <p><b>✨ The Mission of this Website:</b><br>
+        All levels listed here are <b>currently UNRATED in Geometry Dash</b>, but possess high quality and deserve to be officially rated by <b>RobTop Games</b>! Once a level gets rated in-game, it will be removed from this showcase.</p>
 
         <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 15px 0;">
 
-        <p><b>⚠️ Code Usage:</b><br>
-        This code belongs to <b>Ryangimlagi</b>. You are not allowed to copy or reuse this code for your own projects without asking for permission first!</p>
+        <p><b>⚠️ Code & Project Copyright:</b><br>
+        Geometry Dash assets belong to RobTop Games. This code belongs to <b>Ryangimlagi</b>. Do not copy or reuse without permission!</p>
 
         <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 15px 0;">
 
-        <p><b>📩 Found a rate-worthy level?</b><br>
-        Send an email to submit your level:</p>
+        <p><b>📩 Found an awesome UNRATED level?</b><br>
+        Send an email to submit a level for the list:</p>
         
         <div style="background: rgba(0,0,0,0.4); padding: 8px 12px; border-radius: 6px; color: #ffd700; font-family: monospace; font-weight: bold; display: inline-block;">
             your-email@example.com
         </div>
 
-        <p><b>Include in your email:</b></p>
+        <p><b>Please include:</b></p>
         <ul>
             <li>📌 <b>Level Name</b></li>
             <li>🔢 <b>Level ID</b></li>
@@ -434,7 +443,7 @@
 
 <script>
     // =========================================================================
-    // LEVEL DATABASE (HIER NEUE LEVEL EINFÜGEN)
+    // UNRATED LEVEL DATABASE (ACTUAL CIRCLES = STAR / POPSICLE = FEATURED)
     // =========================================================================
     const levels = [
         {
@@ -442,7 +451,7 @@
             id: "67726921",
             creator: "Toma36",
             difficulty: "demon",
-            rate: "featured",
+            rate: "star",
             image: "https://i.imgur.com/LXM13qM.png"
         },
         {
@@ -450,7 +459,7 @@
             id: "107237653",
             creator: "Freytz",
             difficulty: "normal",
-            rate: "star",
+            rate: "featured",
             image: "https://i.imgur.com/bAVk2gD.jpeg"
         }
     ];
@@ -528,7 +537,7 @@
         document.getElementById('showingCount').innerText = filtered.length;
 
         if (filtered.length === 0) {
-            listContainer.innerHTML = '<p style="text-align: center; color: #888; padding: 20px;">No levels found matching your search criteria.</p>';
+            listContainer.innerHTML = '<p style="text-align: center; color: #888; padding: 20px;">No rate-worthy unrated levels found matching your criteria.</p>';
             return;
         }
 
